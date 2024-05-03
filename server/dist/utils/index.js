@@ -9,10 +9,7 @@ const lodash_1 = require("lodash");
 const SECRET = process.env.SECRET || 'secret';
 const random = () => crypto_1.default.randomBytes(128).toString('base64');
 exports.random = random;
-const authentication = (salt, password) => crypto_1.default
-    .createHmac('sha512', [salt, password].join('/'))
-    .update(SECRET)
-    .digest('hex');
+const authentication = (salt, password) => crypto_1.default.createHmac('sha512', [salt, password].join('/')).update(SECRET).digest('hex');
 exports.authentication = authentication;
 const getUserIdFromRequest = (req) => {
     const currentUserId = (0, lodash_1.get)(req, 'identity._id');

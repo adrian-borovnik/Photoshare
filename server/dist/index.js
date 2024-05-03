@@ -23,6 +23,7 @@ app.use((0, cors_1.default)({
 app.use((0, compression_1.default)());
 app.use((0, cookie_parser_1.default)());
 app.use(body_parser_1.default.json());
+app.use('/api', (0, routers_1.default)());
 const server = http_1.default.createServer(app);
 server.listen(PORT, () => {
     console.log(`[server]: Server is running at http://localhost:${PORT}`);
@@ -31,4 +32,3 @@ const MONGODB_URI = process.env.MONGODB_URI;
 mongoose_1.default.Promise = Promise;
 mongoose_1.default.connect(MONGODB_URI);
 mongoose_1.default.connection.on('error', (error) => console.error(error));
-app.use('/api', (0, routers_1.default)());

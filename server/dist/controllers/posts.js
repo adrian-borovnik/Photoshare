@@ -15,7 +15,7 @@ const post_1 = require("../models/post");
 const comment_1 = require("../models/comment");
 const listPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const posts = yield (0, post_1.getPosts)();
+        const posts = yield (0, post_1.getPosts)().populate('user').populate('comments');
         return res.status(200).json(posts).end();
     }
     catch (error) {

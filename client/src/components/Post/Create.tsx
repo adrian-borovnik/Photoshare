@@ -1,0 +1,98 @@
+import { CloudUploadRounded } from '@mui/icons-material'
+import { Button, FormControl, FormLabel, Textarea, styled } from '@mui/joy'
+import { useState } from 'react'
+import { useApi } from '../../hooks/useApi'
+
+const VisuallyHiddenInput = styled('input')({
+	clip: 'rect(0 0 0 0)',
+	clipPath: 'inset(50%)',
+	height: 1,
+	overflow: 'hidden',
+	position: 'absolute',
+	bottom: 0,
+	left: 0,
+	whiteSpace: 'nowrap',
+	width: 1,
+})
+
+export const PostCreate: React.FC = () => {
+	const [image, setImage] = useState<File | null>(null)
+	const [caption, setCaption] = useState<string | null>(null)
+
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (file) {
+			const reader = new FileReader()
+			reader.onload = () => {
+				const preview = document.getElementById('preview')
+				if (preview) {
+					preview.style.backgroundImage = `url(${reader.result})`
+				}
+			}
+			reader.readAsDataURL(file)
+			setImage(file)
+		}
+
+		console.log('image', image)
+	}
+
+	const handleChangeCaption = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setCaption(e.target.value)
+	}
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		console.log('submit', caption, image)
+
+		// TODO | Implement post creation
+
+		// const { postApi } = useApi()
+		// try {
+		// 	const response = await postApi.createPost({
+		// 		content: caption!,
+		// 		imagePath: image?.name!,
+		// 	})
+		// 	console.log('response', response)
+		// } catch (error) {
+		// 	console.error(error)
+		// }
+	}
+
+	return (
+		<form
+			onSubmit={(e) => handleSubmit(e)}
+			className='w-full flex flex-col space-y-4'
+		>
+			<FormControl>
+				<FormLabel>Image</FormLabel>
+				<div
+					id='preview'
+					className='w-full h-96 bg-gray-200 bg-contain bg-no-repeat bg-center rounded-lg mb-4'
+				/>
+				<Button
+					startDecorator={<CloudUploadRounded />}
+					component='label'
+				>
+					Upload
+					<VisuallyHiddenInput
+						type='file'
+						onChange={(e) => handleImageChange(e)}
+					/>
+				</Button>
+			</FormControl>
+			<FormControl>
+				<FormLabel>Caption</FormLabel>
+				<Textarea
+					minRows={5}
+					onChange={(e) => handleChangeCaption(e)}
+				/>
+			</FormControl>
+			<Button
+				type='submit'
+				disabled={!image || !caption}
+			>
+				Post
+			</Button>
+		</form>
+	)
+}
