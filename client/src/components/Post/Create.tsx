@@ -46,16 +46,18 @@ export const PostCreate: React.FC = () => {
 
 		// TODO | Implement post creation
 
-		// const { postApi } = useApi()
-		// try {
-		// 	const response = await postApi.createPost({
-		// 		content: caption!,
-		// 		imagePath: image?.name!,
-		// 	})
-		// 	console.log('response', response)
-		// } catch (error) {
-		// 	console.error(error)
-		// }
+		const formData = new FormData()
+		formData.append('caption', caption!)
+		formData.append('image', image!)
+
+		const { postApi } = useApi()
+
+		try {
+			const response = await postApi.createPost(formData)
+			console.log('response', response)
+		} catch (error) {
+			console.error('error', error)
+		}
 	}
 
 	return (

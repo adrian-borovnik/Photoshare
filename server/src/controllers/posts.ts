@@ -38,16 +38,20 @@ export const createPost = async (req: Request, res: Response) => {
 		const currentUserId = getUserIdFromRequest(req)
 		if (!currentUserId) return res.sendStatus(403)
 
-		const { content, imagePath } = req.body
-		if (!content || !imagePath) return res.sendStatus(400)
+		// console.log(req)
+		// TODO | Retrive image from request
 
-		const post = await _createPost({
-			content,
-			imagePath,
-			user: currentUserId,
-		})
+		// const { content, imagePath } = req.body
+		// if (!content || !imagePath) return res.sendStatus(400)
 
-		return res.status(200).json(post).end()
+		// const post = await _createPost({
+		// 	content,
+		// 	imagePath,
+		// 	user: currentUserId,
+		// })
+
+		// return res.status(200).json(post).end()
+		return res.sendStatus(200)
 	} catch (error) {
 		console.log(error)
 		return res.sendStatus(400)

@@ -7,7 +7,7 @@ exports.deleteUserById = exports.updateUserById = exports.createUser = exports.g
 const mongoose_1 = __importDefault(require("mongoose"));
 const UserShema = new mongoose_1.default.Schema({
     username: { type: String, required: true },
-    avatar: { type: String, required: true },
+    avatar: { type: String, required: false },
     email: { type: String, required: true },
     auth: {
         password: { type: String, required: true, select: false },

@@ -45,15 +45,17 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const currentUserId = (0, utils_1.getUserIdFromRequest)(req);
         if (!currentUserId)
             return res.sendStatus(403);
-        const { content, imagePath } = req.body;
-        if (!content || !imagePath)
-            return res.sendStatus(400);
-        const post = yield (0, post_1.createPost)({
-            content,
-            imagePath,
-            user: currentUserId,
-        });
-        return res.status(200).json(post).end();
+        // console.log(req)
+        // TODO | Retrive image from request
+        // const { content, imagePath } = req.body
+        // if (!content || !imagePath) return res.sendStatus(400)
+        // const post = await _createPost({
+        // 	content,
+        // 	imagePath,
+        // 	user: currentUserId,
+        // })
+        // return res.status(200).json(post).end()
+        return res.sendStatus(200);
     }
     catch (error) {
         console.log(error);
