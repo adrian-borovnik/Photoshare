@@ -7,30 +7,22 @@ import { useUserState } from '../../stores/user'
 import { useNavigate } from 'react-router-dom'
 import { PAGE_URL } from '../../utils/enums'
 
-export const AuthLogin: React.FC = () => {
+export const AuthRegister: React.FC = () => {
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const [cookies, setCookie] = useCookies(['AUTH'])
 
   const navigate = useNavigate()
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    console.log('login', username, password)
 
     const { authApi } = useApi()
     await authApi
-      .login({ username, password })
-      .then((res) => {
-        console.log(res)
-        setCookie('AUTH', res.auth.sessionToken, {
-          path: '/',
-          domain: 'localhost',
-        })
-
-        useUserState.setState({ user: res })
+      .register({ email, username, password })
+      .then(() => {
         navigate(PAGE_URL.LOGIN)
       })
       .catch((error) => {
@@ -48,7 +40,7 @@ export const AuthLogin: React.FC = () => {
   return (
     <div>
       <form
-        onSubmit={(e) => handleLogin(e)}
+        onSubmit={(e) => handleRegister(e)}
         className="flex flex-col space-y-4"
       >
         <FormControl>
@@ -57,6 +49,14 @@ export const AuthLogin: React.FC = () => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Email</FormLabel>
+          <Input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </FormControl>
         <FormControl>

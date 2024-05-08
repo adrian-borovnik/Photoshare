@@ -18,16 +18,20 @@ export const Navigation: React.FC = () => {
           icon={<HomeRounded />}
           url={PAGE_URL.HOME}
         />
-        <NavigationItem
-          text="Upload Post"
-          icon={<AddCircleOutlineRounded />}
-          url={`${PAGE_URL.POSTS}/create`}
-        />
-        <NavigationItem
-          text="Profile"
-          icon={<AccountCircleRounded />}
-          url={`${PAGE_URL.PROFILE}/${user!._id}`}
-        />
+        {user && (
+          <>
+            <NavigationItem
+              text="Upload Post"
+              icon={<AddCircleOutlineRounded />}
+              url={`${PAGE_URL.POSTS}/create`}
+            />
+            <NavigationItem
+              text="Profile"
+              icon={<AccountCircleRounded />}
+              url={`${PAGE_URL.PROFILE}/${user!._id}`}
+            />
+          </>
+        )}
       </div>
       <div className="flex flex-col space-y-2">
         <NavigationItem text="Logout" url={PAGE_URL.LOGIN} />
