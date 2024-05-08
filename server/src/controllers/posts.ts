@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { get, merge } from 'lodash'
+import { ObjectId } from 'mongodb'
 
 import { getUserIdFromRequest } from '../utils'
 
@@ -106,6 +107,80 @@ export const deletePost = async (req: Request, res: Response) => {
     await deleteCommentByPost(id)
 
     return res.status(200).json(deletedPost).end()
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(400)
+  }
+}
+
+export const likePost = async (req: Request, res: Response) => {
+  try {
+    const currentUserId = getUserIdFromRequest(req)
+    if (!currentUserId) return res.sendStatus(403)
+
+    const { id } = req.params
+    if (!id) return res.sendStatus(400)
+
+    const post = await getPostById(id)
+    if (!post) return res.sendStatus(404)
+
+    console.log(post)
+
+    let unLiked = null
+
+    post.likes.forEach((objectId, index) => {
+      if (objectId.toString() === currentUserId.toString()) {
+        unLiked = post.likes.splice(index, 1)
+        return
+      }
+    })
+
+    if (!unLiked) {
+      post.likes.push(new ObjectId(currentUserId))
+      post.dislikes = post.dislikes.filter(
+        (objectId) => objectId.toString() !== currentUserId.toString()
+      )
+    }
+
+    post.save()
+
+    return res.status(200).json(post).end()
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(400)
+  }
+}
+
+export const dislikePost = async (req: Request, res: Response) => {
+  try {
+    const currentUserId = getUserIdFromRequest(req)
+    if (!currentUserId) return res.sendStatus(403)
+
+    const { id } = req.params
+    if (!id) return res.sendStatus(400)
+
+    const post = await getPostById(id)
+    if (!post) return res.sendStatus(404)
+
+    let unDisliked = null
+
+    post.dislikes.forEach((objectId, index) => {
+      if (objectId.toString() === currentUserId.toString()) {
+        unDisliked = post.dislikes.splice(index, 1)
+        return
+      }
+    })
+
+    if (!unDisliked) {
+      post.dislikes.push(new ObjectId(currentUserId))
+      post.likes = post.likes.filter(
+        (objectId) => objectId.toString() !== currentUserId.toString()
+      )
+    }
+
+    post.save()
+
+    return res.status(200).json(post).end()
   } catch (error) {
     console.log(error)
     return res.sendStatus(400)

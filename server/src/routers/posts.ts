@@ -7,6 +7,8 @@ import {
   getPost,
   listPosts,
   updatePost,
+  likePost,
+  dislikePost,
 } from '../controllers/posts'
 
 import multer from 'multer'
@@ -23,7 +25,12 @@ const upload = multer({ storage })
 export default (router: Router) => {
   router.get('/posts', listPosts)
   router.get('/posts/:id', getPost)
+
+  router.put('/posts/:id/like', isAuthenticated, likePost)
+  router.put('/posts/:id/dislike', isAuthenticated, dislikePost)
   router.put('/posts/:id', isAuthenticated, updatePost)
+
   router.delete('/posts/:id', isAuthenticated, deletePost)
+
   router.post('/posts', isAuthenticated, upload.single('image'), createPost)
 }

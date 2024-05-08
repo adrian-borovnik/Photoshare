@@ -22,8 +22,6 @@ export const createFetchClient = (
     },
   }
 
-  console.log('fetchOptions', fetchOptions)
-
   return $fetch.create(fetchOptions)
 }
 
@@ -34,7 +32,6 @@ export const createFetch = (fetchClient: $Fetch) => {
     data?: any,
     extras = {}
   ): Promise<T> => {
-    console.log('fetch', method, url, data)
     return new Promise((resolve, reject) => {
       fetchClient(url, {
         method,
@@ -48,7 +45,6 @@ export const createFetch = (fetchClient: $Fetch) => {
         ...extras,
       })
         .then((response) => {
-          console.log('response', response)
           resolve(response)
         })
         .catch((error: FetchError) => {

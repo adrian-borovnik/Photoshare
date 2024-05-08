@@ -2,6 +2,8 @@ import { CloudUploadRounded } from '@mui/icons-material'
 import { Button, FormControl, FormLabel, Textarea, styled } from '@mui/joy'
 import { useState } from 'react'
 import { useApi } from '../../hooks/useApi'
+import { useNavigate } from 'react-router-dom'
+import { PAGE_URL } from '../../utils/enums'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -18,6 +20,10 @@ const VisuallyHiddenInput = styled('input')({
 export const PostCreate: React.FC = () => {
   const [image, setImage] = useState<File | null>(null)
   const [caption, setCaption] = useState<string | null>(null)
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const navigate = useNavigate()
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -43,8 +49,6 @@ export const PostCreate: React.FC = () => {
     e.preventDefault()
     console.log('submit', caption, image)
 
-    // TODO | Implement post creation
-
     const formData = new FormData()
     formData.append('image', image!)
     formData.append('caption', caption!)
@@ -52,10 +56,15 @@ export const PostCreate: React.FC = () => {
     const { postApi } = useApi()
 
     try {
+      setLoading(true)
       const response = await postApi.createPost(formData)
       console.log('response', response)
+      setLoading(false)
+      navigate(PAGE_URL.HOME)
     } catch (error) {
       console.error('error', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -82,7 +91,7 @@ export const PostCreate: React.FC = () => {
         <FormLabel>Caption</FormLabel>
         <Textarea minRows={5} onChange={(e) => handleChangeCaption(e)} />
       </FormControl>
-      <Button type="submit" disabled={!image || !caption}>
+      <Button type="submit" disabled={!image || !caption} loading={loading}>
         Post
       </Button>
     </form>

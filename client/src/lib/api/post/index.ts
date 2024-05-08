@@ -20,9 +20,19 @@ export const postApi = (fetcher: $Fetch) => {
     return await fetch(FETCH_METHOD.POST, RESOURCE, formData)
   }
 
+  const likePost = async (id: string): Promise<PostResponse> => {
+    return await fetch(FETCH_METHOD.PUT, `${RESOURCE}/${id}/like`)
+  }
+
+  const dislikePost = async (id: string): Promise<PostResponse> => {
+    return await fetch(FETCH_METHOD.PUT, `${RESOURCE}/${id}/dislike`)
+  }
+
   return {
     getPostList,
     getPost,
     createPost,
+    likePost,
+    dislikePost,
   }
 }

@@ -8,7 +8,6 @@ export const authApi = (fetcher: $Fetch) => {
   const fetch = createFetch(fetcher)
 
   const login = async (requestParams: LoginRequest): Promise<LoginResponse> => {
-    console.log('requestParams', requestParams)
     return await fetch(FETCH_METHOD.POST, `${RESOURCE}/login`, requestParams)
   }
 
