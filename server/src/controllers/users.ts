@@ -1,8 +1,29 @@
 import { Request, Response } from 'express'
 
-import { deleteUserById, getUsers, getUserById } from '../models/user'
+import {
+  deleteUserById,
+  getUsers,
+  getUserById,
+  getUserBySessionToken,
+} from '../models/user'
 import { deletePostByUser } from '../models/post'
 import { deleteCommentByUser } from '../models/comment'
+
+export const getSelf = async (req: Request, res: Response) => {
+  try {
+    const sessionToken = req.cookies['AUTH']
+
+    if (!sessionToken) return res.sendStatus(400)
+
+    const user = await getUserBySessionToken(sessionToken)
+    if (!user) return res.sendStatus(404)
+
+    return res.status(200).json(user).end()
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(400)
+  }
+}
 
 export const listUsers = async (req: Request, res: Response) => {
   try {

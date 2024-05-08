@@ -68,3 +68,10 @@ export const undislikePost = (postId: string, userId: string) =>
 
 export const getPostLikes = (postId: string) =>
   PostModel.findById(postId).then((post) => post?.likes)
+
+export const addComment = (postId: string, commentId: string) =>
+  PostModel.findByIdAndUpdate(
+    postId,
+    { $addToSet: { comments: commentId } },
+    { new: true }
+  ).then((post) => post?.toObject())

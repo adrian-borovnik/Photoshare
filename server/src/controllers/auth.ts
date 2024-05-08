@@ -58,6 +58,7 @@ export const register = async (req: Request, res: Response) => {
         password: authentication(salt, password),
         salt,
       },
+      avatar: 'img/default-avatar.png',
     })
 
     return res.status(200).json(user).end()

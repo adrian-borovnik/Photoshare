@@ -10,16 +10,17 @@ import {
   createPost as _createPost,
   deletePostById,
   updatePostById,
+  likePost as _likePost,
+  unlikePost as _unlikePost,
+  dislikePost as _dislikePost,
+  undislikePost as _undislikePost,
 } from '../models/post'
 
 import { deleteCommentByPost } from '../models/comment'
 
 export const listPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await getPosts()
-      .populate('user')
-      .populate('comments')
-      .sort({ createdAt: -1 })
+    const posts = await getPosts().populate('user').sort({ createdAt: -1 })
 
     return res.status(200).json(posts).end()
   } catch (error) {
@@ -33,7 +34,7 @@ export const getPost = async (req: Request, res: Response) => {
     const { id } = req.params
     if (!id) return res.sendStatus(400)
 
-    const post = await getPostById(id).populate('user').populate('comments')
+    const post = await getPostById(id).populate('user')
     if (!post) return res.sendStatus(404)
 
     return res.status(200).json(post).end()
@@ -50,8 +51,6 @@ export const createPost = async (req: Request, res: Response) => {
 
     const image = get(req, 'file')
     const imagePath = get(image, 'path')?.replace('uploads/', 'img/')
-
-    console.log(image, imagePath)
 
     const { caption } = req.body
 
@@ -78,7 +77,6 @@ export const updatePost = async (req: Request, res: Response) => {
     if (!id) return res.sendStatus(400)
 
     const { content, imagePath } = req.body
-    console.log(content, imagePath)
 
     const post = await getPostById(id)
     if (!post) return res.sendStatus(404)
@@ -124,8 +122,6 @@ export const likePost = async (req: Request, res: Response) => {
     const post = await getPostById(id)
     if (!post) return res.sendStatus(404)
 
-    console.log(post)
-
     let unLiked = null
 
     post.likes.forEach((objectId, index) => {
@@ -143,6 +139,9 @@ export const likePost = async (req: Request, res: Response) => {
     }
 
     post.save()
+
+    // const likedPost = await _likePost(id, currentUserId)
+    // const unDislikedPost = await _undislikePost(id, currentUserId)
 
     return res.status(200).json(post).end()
   } catch (error) {
