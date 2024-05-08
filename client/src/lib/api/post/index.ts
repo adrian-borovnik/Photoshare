@@ -4,25 +4,25 @@ import { API_RESOURCE, FETCH_METHOD } from '../types'
 import { PostCreateRequest, PostListResponse, PostResponse } from './types'
 
 export const postApi = (fetcher: $Fetch) => {
-	const RESOURCE = API_RESOURCE.POST
-	const fetch = createFetch(fetcher)
+  const RESOURCE = API_RESOURCE.POST
+  const fetch = createFetch(fetcher)
 
-	const getPostList = async (): Promise<PostListResponse> => {
-		// TODO | Encode params in the URL
-		return await fetch(FETCH_METHOD.GET, RESOURCE)
-	}
+  const getPostList = async (): Promise<PostListResponse> => {
+    // TODO | Encode params in the URL
+    return await fetch(FETCH_METHOD.GET, RESOURCE)
+  }
 
-	const getPost = async (id: string): Promise<PostResponse> => {
-		return await fetch(FETCH_METHOD.GET, `${RESOURCE}/${id}`)
-	}
+  const getPost = async (id: string): Promise<PostResponse> => {
+    return await fetch(FETCH_METHOD.GET, `${RESOURCE}/${id}`)
+  }
 
-	const createPost = async (formData: FormData): Promise<PostResponse> => {
-		return await fetch(FETCH_METHOD.POST, RESOURCE, formData)
-	}
+  const createPost = async (requestParams: FormData): Promise<PostResponse> => {
+    return await fetch(FETCH_METHOD.POST, RESOURCE, requestParams)
+  }
 
-	return {
-		getPostList,
-		getPost,
-		createPost,
-	}
+  return {
+    getPostList,
+    getPost,
+    createPost,
+  }
 }
