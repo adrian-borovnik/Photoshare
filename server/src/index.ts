@@ -16,22 +16,25 @@ const app: Express = express()
 const PORT = process.env.PORT
 
 app.use(
-	cors({
-		credentials: true,
-		origin: 'http://localhost:5173',
-	}),
+  cors({
+    credentials: true,
+    origin: 'http://localhost:5173',
+  })
 )
 // app.options('*', cors())
 
 app.use(compression())
 app.use(cookieParser())
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/api', router())
+
+app.use('/img', express.static('uploads'))
 
 const server = http.createServer(app)
 
 server.listen(PORT, () => {
-	console.log(`[server]: Server is running at http://localhost:${PORT}`)
+  console.log(`[server]: Server is running at http://localhost:${PORT}`)
 })
 
 const MONGODB_URI = process.env.MONGODB_URI

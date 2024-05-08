@@ -31,6 +31,7 @@ export const PostCreate: React.FC = () => {
       setImage(file)
     }
 
+    console.log('file', file)
     console.log('image', image)
   }
 
@@ -45,8 +46,8 @@ export const PostCreate: React.FC = () => {
     // TODO | Implement post creation
 
     const formData = new FormData()
-    formData.append('caption', caption!)
     formData.append('image', image!)
+    formData.append('caption', caption!)
 
     const { postApi } = useApi()
 

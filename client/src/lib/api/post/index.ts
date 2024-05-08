@@ -16,8 +16,8 @@ export const postApi = (fetcher: $Fetch) => {
     return await fetch(FETCH_METHOD.GET, `${RESOURCE}/${id}`)
   }
 
-  const createPost = async (requestParams: FormData): Promise<PostResponse> => {
-    return await fetch(FETCH_METHOD.POST, RESOURCE, requestParams)
+  const createPost = async (formData: FormData): Promise<PostResponse> => {
+    return await fetch(FETCH_METHOD.POST, RESOURCE, formData)
   }
 
   return {

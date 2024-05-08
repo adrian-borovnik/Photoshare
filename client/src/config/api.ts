@@ -31,7 +31,7 @@ export const createFetch = (fetchClient: $Fetch) => {
   const fetch = <T>(
     method: FETCH_METHOD,
     url: string,
-    data?: object,
+    data?: any,
     extras = {}
   ): Promise<T> => {
     console.log('fetch', method, url, data)

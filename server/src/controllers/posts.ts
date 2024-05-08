@@ -15,7 +15,10 @@ import { deleteCommentByPost } from '../models/comment'
 
 export const listPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await getPosts().populate('user').populate('comments')
+    const posts = await getPosts()
+      .populate('user')
+      .populate('comments')
+      .sort({ createdAt: -1 })
 
     return res.status(200).json(posts).end()
   } catch (error) {
@@ -44,20 +47,23 @@ export const createPost = async (req: Request, res: Response) => {
     const currentUserId = getUserIdFromRequest(req)
     if (!currentUserId) return res.sendStatus(403)
 
-    // console.log(req)
-    // TODO | Retrive image from request
+    const image = get(req, 'file')
+    const imagePath = get(image, 'path')?.replace('uploads/', 'img/')
 
-    const { content, imagePath } = req.body
-    if (!content || !imagePath) return res.sendStatus(400)
+    console.log(image, imagePath)
 
-    // const post = await _createPost({
-    // 	content,
-    // 	imagePath,
-    // 	user: currentUserId,
-    // })
+    const { caption } = req.body
 
-    // return res.status(200).json(post).end()
-    return res.sendStatus(200)
+    if (!caption || !imagePath) return res.sendStatus(400)
+
+    const post = await _createPost({
+      content: caption,
+      imagePath,
+      user: currentUserId,
+    })
+
+    return res.status(200).json(post).end()
+    // return res.sendStatus(200)
   } catch (error) {
     console.log(error)
     return res.sendStatus(400)
