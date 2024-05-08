@@ -6,8 +6,9 @@ import {
   getUserById,
   getUserBySessionToken,
 } from '../models/user'
-import { deletePostByUser } from '../models/post'
-import { deleteCommentByUser } from '../models/comment'
+import { deletePostByUser, getPostByUser } from '../models/post'
+import { deleteCommentByUser, getCommentByUser } from '../models/comment'
+import comments from '../routers/comments'
 
 export const getSelf = async (req: Request, res: Response) => {
   try {
@@ -45,6 +46,36 @@ export const getUser = async (req: Request, res: Response) => {
     if (!user) return res.sendStatus(404)
 
     return res.status(200).json(user).end()
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(400)
+  }
+}
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    if (!id) return res.sendStatus(400)
+
+    const user = await getUserById(id)
+    if (!user) return res.sendStatus(404)
+
+    const posts = await getPostByUser(id)
+    const comments = await getCommentByUser(id)
+
+    let likesReceived = 0
+    posts.forEach((post) => {
+      likesReceived += post.likes.length
+    })
+
+    const stats = {
+      user,
+      posts,
+      comments,
+      likesReceived,
+    }
+
+    return res.status(200).json(stats).end()
   } catch (error) {
     console.log(error)
     return res.sendStatus(400)

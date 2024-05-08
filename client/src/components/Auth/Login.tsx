@@ -1,14 +1,19 @@
 import { Button, FormControl, FormLabel, Input } from '@mui/joy'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { useApi } from '../../hooks/useApi'
 import { useUserState } from '../../stores/user'
+
+import { useNavigate } from 'react-router-dom'
+import { PAGE_URL } from '../../utils/enums'
 
 export const AuthLogin: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const [cookies, setCookie] = useCookies(['AUTH'])
+
+  const navigate = useNavigate()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,12 +32,19 @@ export const AuthLogin: React.FC = () => {
         // TODO | Implement user store
 
         useUserState.setState({ user: res })
+        navigate(PAGE_URL.HOME)
       })
       .catch((error) => {
         console.log('error')
         console.error(error)
       })
   }
+
+  useEffect(() => {
+    // clear AUTH cookie
+    setCookie('AUTH', '', { path: '/', domain: 'localhost' })
+    useUserState.setState({ user: null })
+  }, [])
 
   return (
     <div>

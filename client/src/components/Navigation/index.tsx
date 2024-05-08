@@ -30,7 +30,7 @@ export const Navigation: React.FC = () => {
         />
       </div>
       <div className="flex flex-col space-y-2">
-        <NavigationItem text="Login" url={PAGE_URL.LOGIN} />
+        <NavigationItem text="Logout" url={PAGE_URL.LOGIN} />
       </div>
     </div>
   )

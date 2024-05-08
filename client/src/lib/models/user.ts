@@ -10,6 +10,4 @@ export type User = {
     sessionToken: string
     salt: string
   }
-  // posts: Post[]
-  // comments: PostComment[]
 } & Timestamps
