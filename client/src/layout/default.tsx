@@ -11,32 +11,6 @@ interface Props {
 }
 
 export const Layout: React.FC<Props> = ({ children }: Props) => {
-  const [initialized, setInitialized] = React.useState<boolean>(false)
-
-  const sessionToken = useCookies(['AUTH'])[0].AUTH
-  const navigate = useNavigate()
-
-  const init = async () => {
-    const { userApi } = useApi()
-
-    try {
-      const user = await userApi.getSelf({ sessionToken })
-      useUserState.setState({ user })
-      setInitialized(true)
-    } catch (error) {
-      console.error(error)
-      navigate(PAGE_URL.LOGIN)
-    }
-  }
-
-  useEffect(() => {
-    init()
-  }, [])
-
-  if (!initialized) {
-    return
-  }
-
   return (
     <div className="h-auto min-h-screen flex">
       <Navigation />

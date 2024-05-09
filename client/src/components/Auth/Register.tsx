@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { useApi } from '../../hooks/useApi'
 import { useUserState } from '../../stores/user'
 
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PAGE_URL } from '../../utils/enums'
 
 export const AuthRegister: React.FC = () => {
@@ -38,10 +38,11 @@ export const AuthRegister: React.FC = () => {
   }, [])
 
   return (
-    <div>
+    <div className="flex flex-col space-y-6 items-center">
+      <h1 className="text-3xl font-bold">Register</h1>
       <form
         onSubmit={(e) => handleRegister(e)}
-        className="flex flex-col space-y-4"
+        className="flex flex-col space-y-4 w-96"
       >
         <FormControl>
           <FormLabel>Username</FormLabel>
@@ -69,6 +70,7 @@ export const AuthRegister: React.FC = () => {
         </FormControl>
         <Button type="submit">Login</Button>
       </form>
+      <Link to={PAGE_URL.LOGIN}>I already have an account</Link>
     </div>
   )
 }

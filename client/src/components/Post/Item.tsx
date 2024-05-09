@@ -35,6 +35,8 @@ export const PostItem: React.FC<Props> = ({ post }: Props) => {
   const { postApi } = useApi()
 
   const handleSetLikeAndDislike = () => {
+    if (!user) return
+
     setLikes(post.likes.length)
     setLiked(post.likes.includes(user!._id))
 

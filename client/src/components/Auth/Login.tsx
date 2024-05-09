@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie'
 import { useApi } from '../../hooks/useApi'
 import { useUserState } from '../../stores/user'
 
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PAGE_URL } from '../../utils/enums'
 
 export const AuthLogin: React.FC = () => {
@@ -24,14 +24,14 @@ export const AuthLogin: React.FC = () => {
     await authApi
       .login({ username, password })
       .then((res) => {
-        console.log(res)
         setCookie('AUTH', res.auth.sessionToken, {
           path: '/',
           domain: 'localhost',
         })
 
         useUserState.setState({ user: res })
-        navigate(PAGE_URL.LOGIN)
+
+        navigate(PAGE_URL.HOME)
       })
       .catch((error) => {
         console.log('error')
@@ -46,10 +46,11 @@ export const AuthLogin: React.FC = () => {
   }, [])
 
   return (
-    <div>
+    <div className="flex flex-col space-y-6 items-center">
+      <h1 className="text-3xl font-bold">Login</h1>
       <form
         onSubmit={(e) => handleLogin(e)}
-        className="flex flex-col space-y-4"
+        className="flex flex-col space-y-4 w-96"
       >
         <FormControl>
           <FormLabel>Username</FormLabel>
@@ -69,6 +70,7 @@ export const AuthLogin: React.FC = () => {
         </FormControl>
         <Button type="submit">Login</Button>
       </form>
+      <Link to={PAGE_URL.REGISTER}>Create new account</Link>
     </div>
   )
 }
