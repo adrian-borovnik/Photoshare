@@ -8,3 +8,5 @@ export type PostResponse = Post
 export type PostCreateRequest = Pick<Post, 'content'> & {
   image: File
 }
+
+export type PostReportResponse = PostResponse

@@ -60,7 +60,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
     const user = await getUserById(id)
     if (!user) return res.sendStatus(404)
 
-    const posts = await getPostByUser(id)
+    const posts = await getPostByUser(id).sort({ createdAt: -1 })
     const comments = await getCommentByUser(id)
 
     let likesReceived = 0

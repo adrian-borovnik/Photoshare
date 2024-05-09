@@ -10,4 +10,5 @@ export type Post = {
   likes: string[]
   dislikes: string[]
   comments: PostComment[]
+  reports: string[]
 } & Timestamps

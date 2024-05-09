@@ -12,6 +12,7 @@ const PostShema = new mongoose.Schema(
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   { timestamps: true }
 )
@@ -73,5 +74,12 @@ export const addComment = (postId: string, commentId: string) =>
   PostModel.findByIdAndUpdate(
     postId,
     { $addToSet: { comments: commentId } },
+    { new: true }
+  ).then((post) => post?.toObject())
+
+export const addReport = (postId: string, userId: string) =>
+  PostModel.findByIdAndUpdate(
+    postId,
+    { $addToSet: { reports: userId } },
     { new: true }
   ).then((post) => post?.toObject())

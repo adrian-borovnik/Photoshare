@@ -14,6 +14,7 @@ import {
   unlikePost as _unlikePost,
   dislikePost as _dislikePost,
   undislikePost as _undislikePost,
+  addReport,
 } from '../models/post'
 
 import { deleteCommentByPost } from '../models/comment'
@@ -180,6 +181,26 @@ export const dislikePost = async (req: Request, res: Response) => {
     post.save()
 
     return res.status(200).json(post).end()
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(400)
+  }
+}
+
+export const reportPost = async (req: Request, res: Response) => {
+  try {
+    const currentUserId = getUserIdFromRequest(req)
+    if (!currentUserId) return res.sendStatus(403)
+
+    const { id } = req.params
+    if (!id) return res.sendStatus(400)
+
+    const post = await getPostById(id)
+    if (!post) return res.sendStatus(404)
+
+    const newPost = await addReport(id, currentUserId)
+
+    return res.status(200).json(newPost).end()
   } catch (error) {
     console.log(error)
     return res.sendStatus(400)

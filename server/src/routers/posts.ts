@@ -9,6 +9,7 @@ import {
   updatePost,
   likePost,
   dislikePost,
+  reportPost,
 } from '../controllers/posts'
 
 import multer from 'multer'
@@ -28,6 +29,7 @@ export default (router: Router) => {
 
   router.put('/posts/:id/like', isAuthenticated, likePost)
   router.put('/posts/:id/dislike', isAuthenticated, dislikePost)
+  router.put('/posts/:id/report', isAuthenticated, reportPost)
   router.put('/posts/:id', isAuthenticated, updatePost)
 
   router.delete('/posts/:id', isAuthenticated, deletePost)

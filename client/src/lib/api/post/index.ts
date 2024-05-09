@@ -1,7 +1,12 @@
 import { $Fetch } from 'ofetch'
 import { createFetch } from '../../../config/api'
 import { API_RESOURCE, FETCH_METHOD } from '../types'
-import { PostCreateRequest, PostListResponse, PostResponse } from './types'
+import {
+  PostCreateRequest,
+  PostListResponse,
+  PostReportResponse,
+  PostResponse,
+} from './types'
 
 export const postApi = (fetcher: $Fetch) => {
   const RESOURCE = API_RESOURCE.POST
@@ -28,11 +33,16 @@ export const postApi = (fetcher: $Fetch) => {
     return await fetch(FETCH_METHOD.PUT, `${RESOURCE}/${id}/dislike`)
   }
 
+  const reportPost = async (id: string): Promise<PostReportResponse> => {
+    return await fetch(FETCH_METHOD.PUT, `${RESOURCE}/${id}/report`)
+  }
+
   return {
     getPostList,
     getPost,
     createPost,
     likePost,
     dislikePost,
+    reportPost,
   }
 }
